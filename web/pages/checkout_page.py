@@ -17,11 +17,28 @@ class CheckoutPage:
         self._driver = driver
         self._wait = WebDriverWait(driver, self._WAIT_TIMEOUT)
 
+    def _react_fill(self, locator: tuple, value: str) -> None:
+        el = self._wait.until(EC.presence_of_element_located(locator))
+        self._driver.execute_script(
+            """
+            var setter = Object.getOwnPropertyDescriptor(
+                window.HTMLInputElement.prototype, 'value').set;
+            setter.call(arguments[0], arguments[1]);
+            arguments[0].dispatchEvent(new Event('input', {bubbles: true}));
+            arguments[0].dispatchEvent(new Event('change', {bubbles: true}));
+            """,
+            el,
+            value,
+        )
+
     def fill_shipping_info(self, first: str, last: str, zip_code: str) -> None:
-        self._wait.until(EC.element_to_be_clickable(self._FIRST_NAME)).send_keys(first)
-        self._wait.until(EC.element_to_be_clickable(self._LAST_NAME)).send_keys(last)
-        self._wait.until(EC.element_to_be_clickable(self._ZIP_CODE)).send_keys(zip_code)
-        self._driver.find_element(By.TAG_NAME, "form").submit()
+        self._wait.until(EC.presence_of_element_located(self._FIRST_NAME))
+        self._react_fill(self._FIRST_NAME, first)
+        self._react_fill(self._LAST_NAME, last)
+        self._react_fill(self._ZIP_CODE, zip_code)
+        btn = self._wait.until(EC.element_to_be_clickable(self._CONTINUE_BTN))
+        self._driver.execute_script("arguments[0].scrollIntoView(true);", btn)
+        btn.click()
         self._wait.until(EC.url_contains("checkout-step-two.html"))
 
     def finish_order(self) -> None:
