@@ -11,6 +11,7 @@ class InventoryPage:
     _ITEMS = (By.CLASS_NAME, "inventory_item")
     _ITEM_NAME = (By.CLASS_NAME, "inventory_item_name")
     _INVENTORY_CONTAINER = (By.ID, "inventory_container")
+    _REMOVE_BUTTON_XPATH = ".//button[normalize-space()='Remove']"
 
     def __init__(self, driver: WebDriver):
         self._driver = driver
@@ -20,7 +21,13 @@ class InventoryPage:
         self._wait.until(EC.presence_of_element_located(self._INVENTORY_CONTAINER))
         for item in self._driver.find_elements(*self._ITEMS):
             if item.find_element(*self._ITEM_NAME).text == product_name:
-                item.find_element(By.TAG_NAME, "button").click()
+                button = self._wait.until(
+                    lambda _: item.find_element(By.TAG_NAME, "button")
+                )
+                self._driver.execute_script("arguments[0].click();", button)
+                self._wait.until(
+                    lambda _: item.find_elements(By.XPATH, self._REMOVE_BUTTON_XPATH)
+                )
                 return
         raise ValueError(f"Product '{product_name}' not found")
 

@@ -19,4 +19,6 @@ class CartPage:
         return [el.text for el in self._driver.find_elements(*self._ITEM_NAMES)]
 
     def proceed_to_checkout(self) -> None:
-        self._wait.until(EC.element_to_be_clickable(self._CHECKOUT_BTN)).click()
+        button = self._wait.until(EC.element_to_be_clickable(self._CHECKOUT_BTN))
+        self._driver.execute_script("arguments[0].click();", button)
+        self._wait.until(EC.url_contains("checkout-step-one.html"))
