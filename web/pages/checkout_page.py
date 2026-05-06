@@ -19,9 +19,9 @@ class CheckoutPage:
 
     def fill_shipping_info(self, first: str, last: str, zip_code: str) -> None:
         self._wait.until(EC.element_to_be_clickable(self._FIRST_NAME)).send_keys(first)
-        self._driver.find_element(*self._LAST_NAME).send_keys(last)
-        self._driver.find_element(*self._ZIP_CODE).send_keys(zip_code)
-        self._wait.until(EC.element_to_be_clickable(self._CONTINUE_BTN)).click()
+        self._wait.until(EC.element_to_be_clickable(self._LAST_NAME)).send_keys(last)
+        self._wait.until(EC.element_to_be_clickable(self._ZIP_CODE)).send_keys(zip_code)
+        self._driver.find_element(By.TAG_NAME, "form").submit()
         self._wait.until(EC.url_contains("checkout-step-two.html"))
 
     def finish_order(self) -> None:
