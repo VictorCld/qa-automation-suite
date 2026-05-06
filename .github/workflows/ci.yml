@@ -46,6 +46,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Debug - verify checkout
+        run: |
+          git log --oneline -3
+          cat web/pages/cart_page.py
+
       - name: Run Web tests
         env:
           HEADLESS: "true"
