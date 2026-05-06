@@ -26,3 +26,4 @@ class InventoryPage:
 
     def go_to_cart(self) -> None:
         self._wait.until(EC.element_to_be_clickable(self._CART_LINK)).click()
+        self._wait.until(EC.url_contains("cart.html"))
