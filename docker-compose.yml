@@ -1,0 +1,9 @@
+services:
+  tests:
+    build: .
+    volumes:
+      - ./allure-results:/app/allure-results
+    env_file:
+      - .env.example
+    environment:
+      HEADLESS: "true"
