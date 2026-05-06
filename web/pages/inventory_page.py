@@ -25,5 +25,6 @@ class InventoryPage:
         raise ValueError(f"Product '{product_name}' not found")
 
     def go_to_cart(self) -> None:
-        self._wait.until(EC.element_to_be_clickable(self._CART_LINK)).click()
+        element = self._wait.until(EC.element_to_be_clickable(self._CART_LINK))
+        self._driver.execute_script("arguments[0].click();", element)
         self._wait.until(EC.url_contains("cart.html"))
