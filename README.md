@@ -165,7 +165,3 @@ A pipeline e disparada automaticamente em `push` e `pull_request`, cobrindo as d
 - pipeline do GitHub Actions executando os dois jobs
 - pontos de design adotados para deixar a automacao reutilizavel e legivel
 
-## Observacoes Finais
-
-- o repositorio deve ser publicado como `publico` no GitHub para atender ao criterio de entrega
-- para a avaliacao, vale manter um historico de commits limpo, com mensagens curtas e objetivas, separando README, CI, API e Web quando possivel
